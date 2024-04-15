@@ -11,7 +11,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AlertDialog;
-
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 public class MainActivity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextPassword;
@@ -86,13 +87,24 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+
+
     private void attemptLogin() {
         // Get the text from the EditText fields
         String name = editTextName.getText().toString();
         String password = editTextPassword.getText().toString();
 
+        // Get SharedPreferences instance
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
         // Check if the name and password match the expected values
         if (name.equals("Rami") && password.equals("1234")) {
+            // Save the credentials if they are correct
+            editor.putString("username", name);
+            editor.putString("password", password);
+            editor.apply();
+
             // If the credentials are correct, open MainActivity2
             Intent intent = new Intent(MainActivity.this, MainActivity2.class);
             startActivity(intent);
@@ -111,4 +123,5 @@ public class MainActivity extends AppCompatActivity {
             alert.show();
         }
     }
+
 }
